@@ -25,6 +25,7 @@
     <canvas id="pip-canvas" width="180" height="96" class="hidden"></canvas>
     <video id="pip-video" class="hidden" muted playsinline></video>
 
+    <!-- Floating Timer (Minimalkan) -->
     <div id="floating-timer" class="fixed bottom-20 md:bottom-8 right-4 bg-slate-900 border border-indigo-500 rounded-xl p-3 shadow-2xl shadow-indigo-500/20 z-[60] hidden flex-row items-center gap-3 cursor-pointer hover:bg-slate-800 transition-colors group" onclick="reopenFocusMode()">
         <div class="relative w-8 h-8 flex items-center justify-center">
             <i id="floating-timer-icon" class="fa-solid fa-circle-notch animate-spin text-indigo-400 absolute text-2xl"></i>
@@ -39,6 +40,7 @@
         </div>
     </div>
 
+    <!-- SIDEBAR -->
     <aside class="w-64 bg-slate-900 border-r border-slate-800 hidden md:flex flex-col z-20 shadow-2xl relative shrink-0">
         <div class="p-6 flex items-center gap-3">
             <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/30 shrink-0">
@@ -67,6 +69,7 @@
         </nav>
     </aside>
 
+    <!-- MOBILE NAV -->
     <nav class="md:hidden fixed bottom-0 w-full max-w-full bg-slate-900 border-t border-slate-800 flex justify-around items-center p-2 z-40 pb-safe">
         <button onclick="switchTab('dashboard')" id="mob-dashboard" class="flex flex-col items-center p-2 text-indigo-400 w-1/4">
             <i class="fa-solid fa-chart-pie text-lg mb-1"></i>
@@ -87,6 +90,7 @@
         </button>
     </nav>
 
+    <!-- MAIN CONTENT -->
     <main class="flex-1 flex flex-col relative overflow-hidden pb-16 md:pb-0 w-full max-w-full">
         <header class="h-16 border-b border-slate-800 flex items-center justify-between px-4 md:px-8 bg-slate-900/50 backdrop-blur-md sticky top-0 z-10 w-full max-w-full">
             <div class="flex items-center gap-3">
@@ -99,6 +103,7 @@
 
         <div class="flex-1 overflow-y-auto overflow-x-hidden p-4 md:p-8 space-y-6 w-full max-w-full">
             
+            <!-- TAB DASHBOARD -->
             <div id="tab-dashboard" class="tab-content block max-w-4xl mx-auto space-y-6 w-full">
                 <div class="glass-panel p-5 md:p-6 rounded-2xl border border-indigo-500/30 relative overflow-hidden w-full">
                     <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-2xl -mr-10 -mt-10"></div>
@@ -111,6 +116,7 @@
                 </div>
             </div>
 
+            <!-- TAB INBOX -->
             <div id="tab-inbox" class="tab-content hidden max-w-2xl mx-auto w-full">
                 <div class="glass-panel rounded-2xl p-4 md:p-5 shadow-xl mb-8 border border-slate-700 w-full box-border">
                     <div class="flex flex-col md:flex-row gap-3 w-full box-border">
@@ -127,6 +133,7 @@
                 <div id="inbox-list" class="space-y-3 pb-10 w-full"></div>
             </div>
 
+            <!-- TAB TASKS -->
             <div id="tab-tasks" class="tab-content hidden max-w-3xl mx-auto space-y-8 w-full">
                 <div class="w-full">
                     <h3 class="text-sm font-medium text-indigo-400 mb-3 uppercase tracking-wider border-b border-slate-800 pb-2"><i class="fa-solid fa-bolt mr-2"></i>Sedang Berjalan</h3>
@@ -146,25 +153,8 @@
                 </div>
             </div>
 
+            <!-- TAB REVIEW -->
             <div id="tab-review" class="tab-content hidden max-w-4xl mx-auto space-y-6 w-full">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full relative">
-                    <button onclick="promptResetStats()" class="absolute top-2 right-2 text-xs text-slate-500 hover:text-red-400 bg-slate-900 border border-slate-800 px-2.5 py-1 rounded-lg transition-colors flex items-center gap-1">
-                        <i class="fa-solid fa-rotate-right"></i> Reset Statistik
-                    </button>
-                    <div class="glass-panel p-4 rounded-2xl text-center">
-                        <p class="text-xs text-slate-400 mb-1">Total Sesi Fokus</p>
-                        <p id="stat-sessions" class="text-2xl md:text-3xl font-bold text-indigo-400">0</p>
-                    </div>
-                    <div class="glass-panel p-4 rounded-2xl text-center">
-                        <p class="text-xs text-slate-400 mb-1">Tugas Selesai</p>
-                        <p id="stat-completed" class="text-2xl md:text-3xl font-bold text-emerald-400">0</p>
-                    </div>
-                    <div class="glass-panel p-4 rounded-2xl text-center">
-                        <p class="text-xs text-slate-400 mb-1">Distraksi Diparkir</p>
-                        <p id="stat-parked" class="text-2xl md:text-3xl font-bold text-orange-400">0</p>
-                    </div>
-                </div>
-
                 <div class="glass-panel p-5 rounded-2xl border border-slate-700 w-full">
                     <h3 class="text-sm font-medium text-slate-300 mb-3">Catat Distraksi / Ide Baru</h3>
                     <div class="flex flex-col md:flex-row gap-2 w-full mb-6">
@@ -179,6 +169,21 @@
         </div>
     </main>
 
+    <!-- MODAL: KUSTOM KONFIRMASI -->
+    <div id="modal-confirm" class="fixed inset-0 bg-slate-950/90 backdrop-blur-sm z-[150] hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-sm p-6 shadow-2xl flex flex-col items-center text-center">
+            <div class="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center mb-4 border border-slate-700">
+                <i class="fa-solid fa-circle-question text-xl text-indigo-400"></i>
+            </div>
+            <h3 id="confirm-title" class="text-lg font-bold text-white mb-2">Konfirmasi</h3>
+            <p id="confirm-desc" class="text-sm text-slate-400 mb-6 w-full break-words">Apakah Anda yakin?</p>
+            <div class="flex gap-3 w-full">
+                <button onclick="closeConfirmModal()" class="flex-1 py-2.5 rounded-xl border border-slate-700 text-slate-300 hover:bg-slate-800 text-sm font-medium transition-colors">Batal</button>
+                <button id="confirm-btn-action" class="flex-1 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium transition-colors">Yakin</button>
+            </div>
+        </div>
+    </div>
+
     <!-- MODAL: DETAIL TUGAS LENGKAP -->
     <div id="modal-detail" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-[70] hidden flex items-center justify-center p-4">
         <div class="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-2xl shadow-2xl flex flex-col max-h-[90vh] md:max-h-[85vh]">
@@ -187,7 +192,7 @@
                     <h3 class="font-medium text-white text-lg">Detail Tugas Lengkap</h3>
                     <span id="detail-created-at" class="text-[10px] text-slate-400 bg-slate-800 px-2 py-0.5 rounded border border-slate-700"></span>
                 </div>
-                <button onclick="promptCloseModal()" class="text-slate-400 hover:text-white p-1" title="Tutup tanpa menyimpan"><i class="fa-solid fa-xmark text-xl"></i></button>
+                <button onclick="closeModalCheck()" class="text-slate-400 hover:text-white p-1"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
             
             <div class="p-5 overflow-y-auto flex-1 space-y-6">
@@ -202,7 +207,7 @@
 
                 <!-- RIWAYAT CATATAN LANJUT NANTI -->
                 <div id="continue-notes-container" class="hidden bg-indigo-950/30 p-4 rounded-xl border border-indigo-800/40 space-y-2">
-                    <label class="text-xs font-semibold text-indigo-300 uppercase tracking-wider block"><i class="fa-solid fa-bookmark mr-1"></i> Riwayat Sesi Tertunda (Lanjut Nanti)</label>
+                    <label class="text-xs font-semibold text-indigo-300 uppercase tracking-wider block"><i class="fa-solid fa-bookmark mr-1"></i> Riwayat Sesi Tertunda</label>
                     <div id="continue-notes-list" class="space-y-2 max-h-36 overflow-y-auto pr-1"></div>
                 </div>
                 
@@ -226,7 +231,7 @@
                     </div>
                     <div class="md:col-span-2">
                         <label class="text-xs text-slate-400 font-medium mb-2 block">Tenggat Waktu (Deadline)</label>
-                        <input type="date" id="detail-deadline" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none">
+                        <input type="date" id="detail-deadline" class="w-full max-w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none block box-border min-h-[44px]">
                     </div>
                 </div>
 
@@ -236,7 +241,7 @@
                         <input type="text" id="subtask-input" placeholder="Apa langkah pertama yang harus dilakukan?" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none" onkeypress="if(event.key==='Enter') addSubtask('detail')">
                         <button onclick="addSubtask('detail')" class="w-full md:w-auto shrink-0 bg-slate-700 hover:bg-slate-600 text-white px-4 py-2.5 rounded-lg text-sm font-medium transition-colors"><i class="fa-solid fa-plus mr-1"></i> Tambah</button>
                     </div>
-                    <div id="subtask-list" class="space-y-2 mt-3"></div>
+                    <div id="subtask-list" class="space-y-2 mt-3 w-full"></div>
                 </div>
             </div>
             
@@ -245,88 +250,16 @@
                     <i class="fa-regular fa-trash-can mr-1"></i> Hapus
                 </button>
                 <div class="flex gap-2 w-full justify-end">
-                    <button id="btn-save-task" onclick="promptSaveTask()" class="py-2.5 px-5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-medium border border-slate-700 transition-colors">
-                        Simpan Perubahan
+                    <button id="btn-save-task" onclick="saveTaskDetailsOnly()" class="py-2.5 px-5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-medium border border-slate-700 transition-colors">
+                        Simpan
+                    </button>
+                    <button id="btn-reopen-task" onclick="reopenCompletedTask()" class="hidden py-2.5 px-5 rounded-xl bg-orange-600 hover:bg-orange-500 text-white text-sm font-medium transition-colors">
+                        Buka Kembali
                     </button>
                     <button id="btn-execute-task" onclick="triggerTimerSetup()" class="py-2.5 px-6 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium shadow-lg shadow-indigo-500/20 transition-all flex items-center justify-center gap-2">
                         <i class="fa-solid fa-play text-xs"></i> Mulai Eksekusi
                     </button>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL KONFIRMASI SIMPAN (EDIT) -->
-    <div id="modal-edit-confirm" class="fixed inset-0 bg-slate-950/90 backdrop-blur-sm z-[130] hidden flex items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-sm p-5 shadow-2xl flex flex-col text-center">
-            <div class="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto mb-3 text-xl">
-                <i class="fa-regular fa-floppy-disk"></i>
-            </div>
-            <h3 class="text-lg font-bold text-white mb-2">Simpan Perubahan?</h3>
-            <p class="text-xs text-slate-300 mb-5 leading-relaxed px-2">Apakah Anda yakin ingin menyimpan perubahan pada tugas ini?</p>
-            <div class="flex gap-3">
-                <button onclick="closeEditConfirmModal()" class="w-1/2 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-medium border border-slate-700 transition-colors">Batal</button>
-                <button onclick="executeSaveTask()" class="w-1/2 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-medium shadow-lg transition-colors">Ya, Simpan</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL KONFIRMASI TUTUP TANPA SIMPAN -->
-    <div id="modal-close-confirm" class="fixed inset-0 bg-slate-950/90 backdrop-blur-sm z-[130] hidden flex items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-sm p-5 shadow-2xl flex flex-col text-center">
-            <div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center mx-auto mb-3 text-xl">
-                <i class="fa-solid fa-triangle-exclamation"></i>
-            </div>
-            <h3 class="text-lg font-bold text-white mb-2">Keluar Tanpa Simpan?</h3>
-            <p class="text-xs text-slate-300 mb-5 leading-relaxed px-2">Perubahan yang belum disimpan akan hilang. Yakin ingin menutup detail?</p>
-            <div class="flex gap-3">
-                <button onclick="closeCloseConfirmModal()" class="w-1/2 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-medium border border-slate-700 transition-colors">Lanjut Edit</button>
-                <button onclick="executeCloseModal()" class="w-1/2 py-2.5 bg-red-600 hover:bg-red-500 text-white rounded-xl text-xs font-medium shadow-lg transition-colors">Ya, Tutup</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL KONFIRMASI HAPUS TUGAS -->
-    <div id="modal-delete-confirm" class="fixed inset-0 bg-slate-950/90 backdrop-blur-sm z-[130] hidden flex items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-sm p-5 shadow-2xl flex flex-col text-center">
-            <div class="w-12 h-12 rounded-full bg-red-500/20 text-red-400 flex items-center justify-center mx-auto mb-3 text-xl">
-                <i class="fa-regular fa-trash-can"></i>
-            </div>
-            <h3 class="text-lg font-bold text-white mb-2">Hapus Tugas Ini?</h3>
-            <p class="text-xs text-slate-300 mb-5 leading-relaxed px-2">Tugas dan seluruh riwayat langkahnya akan dihapus permanen.</p>
-            <div class="flex gap-3">
-                <button onclick="closeDeleteConfirmModal()" class="w-1/2 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-medium border border-slate-700 transition-colors">Batal</button>
-                <button onclick="executeDeleteTask()" class="w-1/2 py-2.5 bg-red-600 hover:bg-red-500 text-white rounded-xl text-xs font-medium shadow-lg transition-colors">Ya, Hapus</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL KONFIRMASI RESET STATISTIK -->
-    <div id="modal-reset-confirm" class="fixed inset-0 bg-slate-950/90 backdrop-blur-sm z-[130] hidden flex items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-sm p-5 shadow-2xl flex flex-col text-center">
-            <div class="w-12 h-12 rounded-full bg-orange-500/20 text-orange-400 flex items-center justify-center mx-auto mb-3 text-xl">
-                <i class="fa-solid fa-rotate-right"></i>
-            </div>
-            <h3 class="text-lg font-bold text-white mb-2">Reset Statistik?</h3>
-            <p class="text-xs text-slate-300 mb-5 leading-relaxed px-2">Semua hitungan sesi dan tugas selesai akan dikembalikan ke nol (0).</p>
-            <div class="flex gap-3">
-                <button onclick="closeResetConfirmModal()" class="w-1/2 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-medium border border-slate-700 transition-colors">Batal</button>
-                <button onclick="executeResetStats()" class="w-1/2 py-2.5 bg-orange-600 hover:bg-orange-500 text-white rounded-xl text-xs font-medium shadow-lg transition-colors">Ya, Reset</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL KONFIRMASI CHECK/UNCHECK SUBTUGAS -->
-    <div id="modal-subtask-confirm" class="fixed inset-0 bg-slate-950/90 backdrop-blur-sm z-[120] hidden flex items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-sm p-5 shadow-2xl flex flex-col text-center">
-            <div class="w-12 h-12 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center mx-auto mb-3 text-xl">
-                <i class="fa-solid fa-shield-halved"></i>
-            </div>
-            <h3 class="text-lg font-bold text-white mb-2">Konfirmasi Langkah</h3>
-            <p id="subtask-confirm-text" class="text-xs text-slate-300 mb-5 leading-relaxed px-2">Apakah Anda yakin ingin mengubah status langkah ini?</p>
-            <div class="flex gap-3">
-                <button onclick="closeSubtaskConfirmModal()" class="w-1/2 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-medium border border-slate-700 transition-colors">Batal</button>
-                <button id="btn-subtask-confirm-submit" class="w-1/2 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-medium shadow-lg transition-colors">Ya, Yakin</button>
             </div>
         </div>
     </div>
@@ -339,13 +272,13 @@
             
             <div class="grid grid-cols-2 gap-3 mb-4">
                 <button onclick="confirmTimerSetup(15)" class="bg-slate-800 hover:bg-indigo-600 text-white py-3 rounded-xl border border-slate-700 transition-colors text-sm font-medium shadow-sm">15 Menit</button>
-                <button onclick="confirmTimerSetup(25)" class="bg-slate-800 hover:bg-indigo-600 text-white py-3 rounded-xl border border-slate-700 transition-colors text-sm font-medium shadow-sm">25 Menit</button>
+                <button onclick="confirmTimerSetup(25)" class="bg-slate-800 hover:bg-indigo-600 text-white py-3 rounded-xl border border-slate-700 transition-colors text-sm font-medium shadow-sm flex items-center justify-center gap-1"><i class="fa-solid fa-fire text-orange-500"></i> 25 Menit</button>
                 <button onclick="confirmTimerSetup(45)" class="bg-slate-800 hover:bg-indigo-600 text-white py-3 rounded-xl border border-slate-700 transition-colors text-sm font-medium shadow-sm">45 Menit</button>
                 <button onclick="confirmTimerSetup(60)" class="bg-slate-800 hover:bg-indigo-600 text-white py-3 rounded-xl border border-slate-700 transition-colors text-sm font-medium shadow-sm">60 Menit</button>
             </div>
             
             <div class="flex gap-2 mb-4">
-                <input type="number" id="custom-timer-input" placeholder="Kustom (mnt)..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-indigo-500">
+                <input type="number" id="custom-timer-input" placeholder="Kustom (mnt)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none">
                 <button onclick="confirmCustomTimer()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2.5 rounded-xl text-sm font-medium shrink-0 shadow-lg">Mulai</button>
             </div>
 
@@ -359,34 +292,34 @@
 
     <!-- FOCUS MODE -->
     <div id="focus-mode" class="fixed inset-0 bg-slate-950 z-[100] hidden flex-col overflow-y-auto pb-24 md:pb-8 p-4 md:p-8 w-full">
-        <div class="max-w-3xl w-full mx-auto flex flex-col h-full min-h-screen overflow-x-hidden relative">
+        <div class="max-w-4xl w-full mx-auto flex flex-col min-h-screen overflow-x-hidden">
             
-            <div class="flex justify-between items-center mb-6 shrink-0">
+            <div class="flex justify-between items-center mb-8 shrink-0">
                 <button onclick="minimizeFocusMode()" class="text-slate-400 hover:text-white flex items-center gap-2 bg-slate-800 px-4 py-2 rounded-xl text-sm border border-slate-700 transition-colors shadow-lg">
                     <i class="fa-solid fa-chevron-down"></i> Minimalkan
                 </button>
-                <div class="flex items-center gap-3">
-                    <button onclick="toggleAlarmMute()" id="btn-mute-alarm" title="Matikan/Nyalakan Suara Alarm" class="text-slate-400 hover:text-white bg-slate-800 px-3 py-2 rounded-xl text-sm border border-slate-700 transition-colors">
-                        <i id="mute-icon" class="fa-solid fa-volume-high text-indigo-400"></i>
+                <div class="flex items-center gap-4">
+                    <button id="btn-mute" onclick="toggleMute()" class="text-slate-400 hover:text-white w-10 h-10 rounded-full bg-slate-900 border border-slate-700 flex items-center justify-center transition-colors">
+                        <i class="fa-solid fa-volume-high"></i>
                     </button>
                     <span class="text-slate-500 text-xs tracking-widest uppercase font-medium"><i class="fa-solid fa-bolt text-indigo-400 mr-1"></i> Mode Fokus</span>
                 </div>
             </div>
             
-            <div class="flex-1 flex flex-col items-center justify-center mb-6 mt-2">
+            <div class="flex-1 flex flex-col items-center justify-center mb-10 mt-2">
                 <h2 id="focus-task-title" class="text-2xl md:text-3xl font-bold text-white mb-6 text-center px-4 max-w-2xl leading-tight w-full break-words">Mengerjakan Tugas</h2>
                 
                 <div class="relative mb-6">
                     <div class="absolute inset-0 bg-indigo-500/20 rounded-full blur-3xl timer-glow"></div>
-                    <div id="time-display" class="relative text-5xl md:text-6xl font-mono font-bold text-white tabular-nums tracking-tighter drop-shadow-2xl">30:00</div>
+                    <div id="time-display" class="relative text-5xl md:text-6xl font-mono font-bold text-white tabular-nums tracking-tighter drop-shadow-2xl">00:00</div>
                 </div>
 
-                <div class="flex gap-4 mb-6">
+                <div class="flex gap-4 mb-8">
                     <button onclick="adjustTime(-5)" class="text-slate-400 hover:text-white bg-slate-800 px-4 py-1.5 rounded-full text-sm border border-slate-700 transition-colors">- 5 Mnt</button>
                     <button onclick="adjustTime(5)" class="text-slate-400 hover:text-white bg-slate-800 px-4 py-1.5 rounded-full text-sm border border-slate-700 transition-colors">+ 5 Mnt</button>
                 </div>
                 
-                <div class="flex gap-3 md:gap-4 flex-wrap justify-center mb-6">
+                <div class="flex gap-3 md:gap-4 flex-wrap justify-center">
                     <button onclick="toggleTimer()" id="btn-toggle-timer" class="bg-indigo-600 hover:bg-indigo-500 text-white w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center text-xl shadow-xl shadow-indigo-600/30 transition-transform hover:scale-105">
                         <i id="timer-icon" class="fa-solid fa-play"></i>
                     </button>
@@ -394,30 +327,43 @@
                         Selesai / Akhiri
                     </button>
                 </div>
-                <button onclick="cancelFocusMode()" class="text-sm text-slate-500 hover:text-red-400 underline decoration-slate-700 hover:decoration-red-400/50 transition-colors">
+                <button onclick="promptCancelFocusMode()" class="mt-6 text-sm text-slate-500 hover:text-red-400 underline decoration-slate-700 hover:decoration-red-400/50 transition-colors">
                     Berhenti Tanpa Menyimpan
                 </button>
             </div>
 
-            <!-- SUBTUGAS DI MODE FOKUS -->
-            <div id="focus-subtasks-container" class="w-full max-w-lg mx-auto shrink-0 bg-slate-900/70 p-4 rounded-2xl border border-slate-800 box-border mb-4">
-                <div class="flex justify-between items-center mb-3">
-                    <label class="text-xs font-medium text-indigo-300 uppercase tracking-wider block"><i class="fa-solid fa-list-check mr-2"></i>Langkah Konkret</label>
-                    <button onclick="openAddSubtaskFocusPrompt()" class="text-xs text-indigo-400 hover:text-indigo-300 bg-indigo-950/60 border border-indigo-800/60 px-2.5 py-1 rounded-lg transition-colors"><i class="fa-solid fa-plus mr-1"></i>Tambah</button>
+            <div class="w-full max-w-2xl mx-auto flex flex-col gap-5 mb-8">
+                <!-- Info Tambahan di Mode Fokus -->
+                <div id="focus-details-panel" class="bg-slate-900/60 p-5 rounded-2xl border border-slate-800 w-full hidden">
+                    <h4 class="text-xs text-slate-400 uppercase tracking-wider mb-2"><i class="fa-solid fa-align-left mr-1"></i> Deskripsi Khusus</h4>
+                    <div id="focus-task-notes" class="text-sm text-slate-300 w-full break-words bg-slate-950 p-3 rounded-lg border border-slate-800 mb-4 whitespace-pre-wrap"></div>
+                    
+                    <div id="focus-task-history-container" class="hidden">
+                        <h4 class="text-xs text-indigo-300 uppercase tracking-wider mb-2 mt-4"><i class="fa-solid fa-clock-rotate-left mr-1"></i> Riwayat Sesi Tertunda</h4>
+                        <div id="focus-task-history" class="space-y-2 w-full"></div>
+                    </div>
                 </div>
-                <div id="focus-subtask-add-box" class="hidden flex gap-2 mb-3">
-                    <input type="text" id="focus-subtask-quick-input" placeholder="Langkah kecil baru..." class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none" onkeypress="if(event.key==='Enter') addSubtask('focus')">
-                    <button onclick="addSubtask('focus')" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded-lg text-xs font-medium shrink-0">Simpan</button>
-                </div>
-                <div id="focus-subtasks-list" class="space-y-2 max-h-48 overflow-y-auto pr-1"></div>
-            </div>
 
-            <!-- PARKIR DISTRAKSI -->
-            <div class="w-full max-w-lg mx-auto shrink-0 bg-slate-900/50 p-5 rounded-2xl border border-slate-800 box-border">
-                <label class="text-xs font-medium text-slate-400 uppercase tracking-wider mb-3 block text-center"><i class="fa-solid fa-car-side mr-2"></i>Area Parkir Distraksi</label>
-                <div class="flex flex-col md:flex-row gap-2 w-full">
-                    <input type="text" id="focus-park-input" placeholder="Teringat hal lain? Parkir di sini..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none" onkeypress="if(event.key === 'Enter') parkIdea('focus-park-input')">
-                    <button onclick="parkIdea('focus-park-input')" class="w-full md:w-auto shrink-0 bg-slate-800 hover:bg-orange-900/50 hover:text-orange-400 text-slate-400 px-4 py-3 rounded-xl transition-colors"><i class="fa-solid fa-arrow-right"></i> Kirim</button>
+                <!-- SUBTUGAS DI MODE FOKUS -->
+                <div id="focus-subtasks-panel" class="bg-slate-900/60 p-5 rounded-2xl border border-slate-800 w-full hidden">
+                    <div class="flex justify-between items-center mb-3">
+                        <label class="text-xs font-medium text-indigo-300 uppercase tracking-wider block"><i class="fa-solid fa-list-check mr-2"></i>Langkah Konkret</label>
+                        <button onclick="openAddSubtaskFocusPrompt()" class="text-xs text-indigo-400 hover:text-indigo-300 bg-indigo-950/60 border border-indigo-800/60 px-2.5 py-1 rounded-lg transition-colors"><i class="fa-solid fa-plus mr-1"></i>Tambah</button>
+                    </div>
+                    <div id="focus-subtask-add-box" class="hidden flex gap-2 mb-3">
+                        <input type="text" id="focus-subtask-quick-input" placeholder="Langkah kecil baru..." class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none" onkeypress="if(event.key==='Enter') addSubtask('focus')">
+                        <button onclick="addSubtask('focus')" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded-lg text-xs font-medium shrink-0">Simpan</button>
+                    </div>
+                    <div id="focus-subtasks-list" class="space-y-2 w-full"></div>
+                </div>
+
+                <!-- PARKIR DISTRAKSI -->
+                <div class="bg-slate-900/50 p-5 rounded-2xl border border-slate-800 w-full box-border">
+                    <label class="text-xs font-medium text-slate-400 uppercase tracking-wider mb-3 block text-center"><i class="fa-solid fa-car-side mr-2"></i>Area Parkir Distraksi</label>
+                    <div class="flex flex-col md:flex-row gap-2 w-full">
+                        <input type="text" id="focus-park-input" placeholder="Teringat hal lain? Parkir di sini..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none" onkeypress="if(event.key === 'Enter') parkIdea('focus-park-input')">
+                        <button onclick="parkIdea('focus-park-input')" class="w-full md:w-auto shrink-0 bg-slate-800 hover:bg-orange-900/50 hover:text-orange-400 text-slate-400 px-4 py-3 rounded-xl transition-colors"><i class="fa-solid fa-arrow-right"></i> Kirim</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -426,12 +372,9 @@
     <!-- MODAL FINISH -->
     <div id="modal-finish" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-[110] hidden flex items-center justify-center p-4">
         <div class="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-md p-5 md:p-6 shadow-2xl flex flex-col relative" id="modal-finish-content">
-            
-            <button onclick="closeFinishModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white p-1 transition-colors" title="Batal / Kembali">
-                <i class="fa-solid fa-xmark text-xl"></i>
-            </button>
+            <button onclick="closeFinishModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white p-1 transition-colors" title="Batal / Kembali"><i class="fa-solid fa-xmark text-xl"></i></button>
 
-            <h3 class="text-xl font-bold text-white mb-1 text-center">Status Sesi</h3>
+            <h3 class="text-xl font-bold text-white mb-1 text-center mt-2">Status Sesi</h3>
             <p class="text-sm text-slate-400 mb-6 text-center">Bagaimana progress tugas ini?</p>
             
             <div class="space-y-3 mb-6">
@@ -453,15 +396,39 @@
         </div>
     </div>
 
+    <!-- MAIN SCRIPT -->
     <script>
-        function getTimestamp() {
-            return Date.now();
+        // GLOBAL VARIABLES
+        let appState = {
+            tasks: JSON.parse(localStorage.getItem('fef_tasks')) || [],
+            stats: JSON.parse(localStorage.getItem('fef_stats')) || { sessions: 0, completed: 0, parked: 0 },
+            parkedIdeas: JSON.parse(localStorage.getItem('fef_parked')) || []
+        };
+        let isMuted = JSON.parse(localStorage.getItem('fef_muted')) || false;
+        
+        let currentEditingId = null;
+        let activeFocusTaskId = null;
+        let detailInitialState = "";
+        
+        let timerInterval = null;
+        let isTimerRunning = false;
+        let timeLeft = 0; 
+        let expectedEndTime = 0;
+        let focusTaskNameForPiP = "Fokus Bebas"; 
+
+        // UTILITIES
+        function saveState() {
+            localStorage.setItem('fef_tasks', JSON.stringify(appState.tasks));
+            localStorage.setItem('fef_stats', JSON.stringify(appState.stats));
+            localStorage.setItem('fef_parked', JSON.stringify(appState.parkedIdeas));
+            localStorage.setItem('fef_muted', JSON.stringify(isMuted));
+            renderAll();
         }
+
+        function getTimestamp() { return Date.now(); }
 
         function formatTimeDisplay(ts) {
             if (!ts) return '';
-            if (typeof ts === 'string') return ts;
-            
             const date = new Date(ts);
             const now = new Date();
             const diffMs = now - date;
@@ -479,21 +446,36 @@
             }
         }
 
-        let appState = {
-            tasks: JSON.parse(localStorage.getItem('fef_tasks')) || [],
-            stats: JSON.parse(localStorage.getItem('fef_stats')) || { sessions: 0, completed: 0, parked: 0 },
-            parkedIdeas: JSON.parse(localStorage.getItem('fef_parked')) || [],
-            settings: JSON.parse(localStorage.getItem('fef_settings')) || { alarmMuted: false }
-        };
-
-        function saveState() {
-            localStorage.setItem('fef_tasks', JSON.stringify(appState.tasks));
-            localStorage.setItem('fef_stats', JSON.stringify(appState.stats));
-            localStorage.setItem('fef_parked', JSON.stringify(appState.parkedIdeas));
-            localStorage.setItem('fef_settings', JSON.stringify(appState.settings));
-            renderAll();
+        // Format waktu super presisi (40 Detik, 1 Menit 20 Detik)
+        function formatPreciseTime(totalSeconds) {
+            if (!totalSeconds || totalSeconds <= 0) return "0 Detik";
+            const m = Math.floor(totalSeconds / 60);
+            const s = totalSeconds % 60;
+            let res = [];
+            if (m > 0) res.push(`${m} Menit`);
+            if (s > 0) res.push(`${s} Detik`);
+            return res.join(" ");
         }
 
+        // Konfirmasi Custom
+        let confirmActionCallback = null;
+        function showConfirm(title, desc, btnText, callback) {
+            document.getElementById('confirm-title').innerText = title;
+            document.getElementById('confirm-desc').innerText = desc;
+            document.getElementById('confirm-btn-action').innerText = btnText;
+            confirmActionCallback = callback;
+            document.getElementById('modal-confirm').classList.remove('hidden');
+        }
+        function closeConfirmModal() {
+            document.getElementById('modal-confirm').classList.add('hidden');
+            confirmActionCallback = null;
+        }
+        document.getElementById('confirm-btn-action').addEventListener('click', () => {
+            if(confirmActionCallback) confirmActionCallback();
+            closeConfirmModal();
+        });
+
+        // NAVIGASI
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
             document.getElementById(`tab-${tabId}`).classList.remove('hidden');
@@ -515,13 +497,11 @@
             document.getElementById('header-title').innerText = titles[tabId];
         }
 
-        let currentEditingId = null;
-        let activeFocusTaskId = null;
-
+        // MANAJEMEN TUGAS UTAMA
         function addDetailedTask() {
             const input = document.getElementById('quick-task-input');
             let name = input.value.trim();
-            if (!name) { name = "Tugas Baru"; }
+            if (!name) name = "Tugas Baru"; 
             
             const ts = getTimestamp();
             const newTask = {
@@ -537,6 +517,16 @@
             openTaskDetail(newTask.id);
         }
 
+        function getDetailCurrentState() {
+            return JSON.stringify({
+                name: document.getElementById('detail-title-input').value.trim(),
+                notes: document.getElementById('detail-notes').value.trim(),
+                impact: document.getElementById('detail-impact').value,
+                risk: document.getElementById('detail-risk').value,
+                deadline: document.getElementById('detail-deadline').value
+            });
+        }
+
         function openTaskDetail(id) {
             currentEditingId = id;
             const task = appState.tasks.find(t => t.id === id);
@@ -550,50 +540,51 @@
             document.getElementById('detail-created-at').innerText = task.createdAt ? `Dibuat: ${formatTimeDisplay(task.createdAt)}` : '';
             
             const execBtn = document.getElementById('btn-execute-task');
+            const reopenBtn = document.getElementById('btn-reopen-task');
+
             if (task.completed) {
                 execBtn.classList.add('hidden');
-            } else if (task.status === 'running' || task.status === 'paused') {
-                execBtn.innerHTML = '<i class="fa-solid fa-play text-xs"></i> Lanjut Fokus';
-                execBtn.onclick = triggerTimerSetup;
-                execBtn.classList.remove('hidden');
+                reopenBtn.classList.remove('hidden');
             } else {
-                execBtn.innerHTML = '<i class="fa-solid fa-play text-xs"></i> Mulai Eksekusi';
-                execBtn.onclick = triggerTimerSetup;
+                reopenBtn.classList.add('hidden');
                 execBtn.classList.remove('hidden');
+
+                if (activeFocusTaskId === task.id && (isTimerRunning || timeLeft > 0)) {
+                    execBtn.innerHTML = `<i class="fa-solid fa-expand text-xs"></i> Lanjut Fokus (${formatPreciseTime(timeLeft)})`;
+                    execBtn.onclick = () => { closeModalForce(); reopenFocusMode(); };
+                } else {
+                    execBtn.innerHTML = '<i class="fa-solid fa-play text-xs"></i> Mulai Eksekusi';
+                    execBtn.onclick = triggerTimerSetup;
+                }
             }
 
-            renderSubtasks();
+            renderSubtasks('detail');
             renderContinueNotesList();
             document.getElementById('modal-detail').classList.remove('hidden');
+            detailInitialState = getDetailCurrentState();
             
             if(task.name === "Tugas Baru") {
                 setTimeout(() => document.getElementById('detail-title-input').focus(), 100);
             }
         }
 
-        function promptCloseModal() {
-            document.getElementById('modal-close-confirm').classList.remove('hidden');
+        function closeModalCheck() {
+            const currentState = getDetailCurrentState();
+            if (currentState !== detailInitialState) {
+                showConfirm("Perubahan Belum Disimpan", "Ada perubahan teks/opsi yang belum disimpan. Yakin ingin menutup tanpa menyimpannya?", "Ya, Tutup (Batal)", () => {
+                    closeModalForce();
+                });
+            } else {
+                closeModalForce();
+            }
         }
-
-        function closeCloseConfirmModal() {
-            document.getElementById('modal-close-confirm').classList.add('hidden');
-        }
-
-        function executeCloseModal() {
-            closeCloseConfirmModal();
+        
+        function closeModalForce() {
             document.getElementById('modal-detail').classList.add('hidden');
             currentEditingId = null;
         }
 
-        function promptSaveTask() {
-            document.getElementById('modal-edit-confirm').classList.remove('hidden');
-        }
-
-        function closeEditConfirmModal() {
-            document.getElementById('modal-edit-confirm').classList.add('hidden');
-        }
-
-        function executeSaveTask() {
+        function saveTaskDetailsOnly() {
             if(currentEditingId) {
                 const task = appState.tasks.find(t => t.id === currentEditingId);
                 if(task) {
@@ -606,199 +597,28 @@
                     saveState();
                 }
             }
-            closeEditConfirmModal();
-            document.getElementById('modal-detail').classList.add('hidden');
-            currentEditingId = null;
+            closeModalForce();
+        }
+
+        function reopenCompletedTask() {
+            showConfirm("Buka Kembali Tugas", "Tugas ini akan dipindahkan ke antrean aktif tanpa menghapus riwayat sebelumnya. Yakin?", "Buka Kembali", () => {
+                const task = appState.tasks.find(t => t.id === currentEditingId);
+                if(task) {
+                    task.completed = false;
+                    task.status = 'todo';
+                    saveState();
+                    closeModalForce();
+                }
+            });
         }
 
         function promptDeleteTask() {
-            document.getElementById('modal-delete-confirm').classList.remove('hidden');
-        }
-
-        function closeDeleteConfirmModal() {
-            document.getElementById('modal-delete-confirm').classList.add('hidden');
-        }
-
-        function executeDeleteTask() {
-            if(currentEditingId) {
+            showConfirm("Hapus Tugas", "Yakin ingin menghapus tugas ini secara permanen?", "Hapus", () => {
                 appState.tasks = appState.tasks.filter(t => t.id !== currentEditingId);
+                if(activeFocusTaskId === currentEditingId) cancelFocusMode(true);
                 saveState();
-            }
-            closeDeleteConfirmModal();
-            document.getElementById('modal-detail').classList.add('hidden');
-            currentEditingId = null;
-        }
-
-        function addSubtask(source = 'detail') {
-            const inputId = source === 'focus' ? 'focus-subtask-quick-input' : 'subtask-input';
-            const input = document.getElementById(inputId);
-            const name = input.value.trim();
-            const targetTaskId = source === 'focus' ? activeFocusTaskId : currentEditingId;
-            if(!name || !targetTaskId) return;
-            
-            const task = appState.tasks.find(t => t.id === targetTaskId);
-            const ts = getTimestamp();
-            task.subtasks.push({ id: Date.now().toString(), name, completed: false, note: "", createdAt: ts });
-            
-            saveState();
-            input.value = '';
-            
-            if (source === 'focus') {
-                document.getElementById('focus-subtask-add-box').classList.add('hidden');
-                renderFocusSubtasks();
-            } else {
-                renderSubtasks();
-            }
-        }
-
-        let pendingSubtaskToggle = null;
-
-        function promptSubtaskToggle(subId, source = 'detail') {
-            const targetTaskId = source === 'focus' ? activeFocusTaskId : currentEditingId;
-            const task = appState.tasks.find(t => t.id === targetTaskId);
-            if(!task) return;
-            const sub = task.subtasks.find(s => s.id === subId);
-            if(!sub) return;
-
-            pendingSubtaskToggle = { taskId: targetTaskId, subId: sub.id, targetState: !sub.completed };
-            
-            const confirmText = sub.completed 
-                ? `Batalkan status selesai pada langkah "${sub.name}"?`
-                : `Selesaikan langkah "${sub.name}"?`;
-                
-            document.getElementById('subtask-confirm-text').innerText = confirmText;
-            document.getElementById('btn-subtask-confirm-submit').onclick = executeSubtaskToggle;
-            document.getElementById('modal-subtask-confirm').classList.remove('hidden');
-        }
-
-        function closeSubtaskConfirmModal() {
-            document.getElementById('modal-subtask-confirm').classList.add('hidden');
-            pendingSubtaskToggle = null;
-        }
-
-        function executeSubtaskToggle() {
-            if(!pendingSubtaskToggle) return;
-            const task = appState.tasks.find(t => t.id === pendingSubtaskToggle.taskId);
-            if(!task) return;
-            const sub = task.subtasks.find(s => s.id === pendingSubtaskToggle.subId);
-            
-            if(sub) {
-                sub.completed = pendingSubtaskToggle.targetState;
-                saveState();
-                renderSubtasks();
-                renderFocusSubtasks();
-            }
-            closeSubtaskConfirmModal();
-        }
-
-        function toggleSubtaskNoteInput(subId) {
-            const box = document.getElementById(`subnote-input-${subId}`);
-            if(box) box.classList.toggle('hidden');
-        }
-
-        function saveSubtaskNote(subId) {
-            const task = appState.tasks.find(t => t.id === currentEditingId);
-            if(!task) return;
-            const sub = task.subtasks.find(s => s.id === subId);
-            const valInput = document.getElementById(`subnote-val-${subId}`);
-            if(sub && valInput) {
-                sub.note = valInput.value.trim();
-                saveState();
-                renderSubtasks();
-                renderFocusSubtasks();
-                toggleSubtaskNoteInput(subId); 
-            }
-        }
-
-        function deleteSubtask(subId) {
-            const task = appState.tasks.find(t => t.id === currentEditingId);
-            if(!task) return;
-            task.subtasks = task.subtasks.filter(s => s.id !== subId);
-            saveState();
-            renderSubtasks();
-            renderFocusSubtasks();
-        }
-
-        function renderSubtasks() {
-            const task = appState.tasks.find(t => t.id === currentEditingId);
-            const container = document.getElementById('subtask-list');
-            if(!task) return;
-            container.innerHTML = task.subtasks.map(sub => `
-                <div class="p-2.5 bg-slate-950/50 rounded-xl border border-slate-800/80 w-full space-y-2">
-                    <div class="flex items-center justify-between gap-2">
-                        <div class="flex items-center gap-3 cursor-pointer flex-1" onclick="promptSubtaskToggle('${sub.id}')">
-                            <div class="w-5 h-5 rounded-md border flex items-center justify-center shrink-0 ${sub.completed ? 'bg-indigo-500 border-indigo-500' : 'border-slate-500'}">
-                                ${sub.completed ? '<i class="fa-solid fa-check text-white text-xs"></i>' : ''}
-                            </div>
-                            <span class="text-sm overflow-hidden text-ellipsis ${sub.completed ? 'line-through text-slate-500' : 'text-slate-300'}">${sub.name}</span>
-                            ${sub.createdAt ? `<span class="text-[9px] text-slate-500 shrink-0">(${formatTimeDisplay(sub.createdAt)})</span>` : ''}
-                        </div>
-                        <button onclick="toggleSubtaskNoteInput('${sub.id}')" title="Catatan Subtugas" class="text-xs ${sub.note ? 'text-indigo-300 bg-indigo-900/40' : 'text-slate-400 hover:text-indigo-300 bg-slate-900'} border border-slate-800 px-2 py-1 rounded-md transition-colors flex items-center gap-1">
-                            <i class="fa-regular fa-note-sticky"></i> ${sub.note ? '•' : ''}
-                        </button>
-                        <button onclick="deleteSubtask('${sub.id}')" title="Hapus" class="text-slate-500 hover:text-red-400 p-1">
-                            <i class="fa-solid fa-xmark text-sm"></i>
-                        </button>
-                    </div>
-                    <div id="subnote-input-${sub.id}" class="hidden flex gap-2 ml-8 pt-1">
-                        <input type="text" id="subnote-val-${sub.id}" value="${sub.note || ''}" placeholder="Catatan langkah ini..." class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-indigo-500">
-                        <button onclick="saveSubtaskNote('${sub.id}')" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded-lg text-xs font-medium shrink-0">Simpan</button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function renderFocusSubtasks() {
-            const task = appState.tasks.find(t => t.id === activeFocusTaskId);
-            const list = document.getElementById('focus-subtasks-list');
-
-            if (!task) return;
-
-            if (!task.subtasks || task.subtasks.length === 0) {
-                list.innerHTML = '<p class="text-xs text-slate-500 text-center py-3">Belum ada langkah konkret. Klik +Tambah untuk membuat.</p>';
-                return;
-            }
-
-            list.innerHTML = task.subtasks.map(sub => `
-                <div class="p-2.5 bg-slate-950/80 rounded-xl border border-slate-800/80 w-full space-y-2">
-                    <div class="flex items-center justify-between gap-2">
-                        <div class="flex items-center gap-3 cursor-pointer flex-1" onclick="promptSubtaskToggle('${sub.id}', 'focus')">
-                            <div class="w-5 h-5 rounded-md border flex items-center justify-center shrink-0 ${sub.completed ? 'bg-indigo-500 border-indigo-500' : 'border-slate-500'}">
-                                ${sub.completed ? '<i class="fa-solid fa-check text-white text-xs"></i>' : ''}
-                            </div>
-                            <span class="text-sm overflow-hidden text-ellipsis ${sub.completed ? 'line-through text-slate-500' : 'text-slate-200'}">${sub.name}</span>
-                        </div>
-                        <button onclick="toggleSubtaskNoteInputFocus('${sub.id}')" title="Catatan Subtugas" class="text-xs ${sub.note ? 'text-indigo-300 bg-indigo-900/40' : 'text-slate-400 bg-slate-900'} border border-slate-800 px-2 py-1 rounded-md">
-                            <i class="fa-regular fa-note-sticky"></i> ${sub.note ? '•' : ''}
-                        </button>
-                    </div>
-                    <div id="focus-subnote-input-${sub.id}" class="hidden flex gap-2 ml-8 pt-1">
-                        <input type="text" id="focus-subnote-val-${sub.id}" value="${sub.note || ''}" placeholder="Catatan..." class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-white focus:outline-none">
-                        <button onclick="saveSubtaskNoteFocus('${sub.id}')" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1 rounded-lg text-xs font-medium shrink-0">Simpan</button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function openAddSubtaskFocusPrompt() {
-            document.getElementById('focus-subtask-add-box').classList.toggle('hidden');
-        }
-
-        function toggleSubtaskNoteInputFocus(subId) {
-            const box = document.getElementById(`focus-subnote-input-${subId}`);
-            if(box) box.classList.toggle('hidden');
-        }
-
-        function saveSubtaskNoteFocus(subId) {
-            const task = appState.tasks.find(t => t.id === activeFocusTaskId);
-            if(!task) return;
-            const sub = task.subtasks.find(s => s.id === subId);
-            const valInput = document.getElementById(`focus-subnote-val-${subId}`);
-            if(sub && valInput) {
-                sub.note = valInput.value.trim();
-                saveState();
-                renderFocusSubtasks();
-            }
+                closeModalForce();
+            });
         }
 
         function renderContinueNotesList() {
@@ -814,78 +634,203 @@
             container.classList.remove('hidden');
             list.innerHTML = task.continueNotes.map(item => `
                 <div class="bg-slate-900/90 p-2.5 rounded-lg border border-indigo-900/50 text-xs text-slate-200 flex justify-between items-start gap-2">
-                    <span class="break-words flex-1"><i class="fa-solid fa-arrow-right-long text-indigo-400 mr-1 text-[10px]"></i>${item.text}</span>
+                    <span class="break-words whitespace-pre-wrap flex-1"><i class="fa-solid fa-arrow-right-long text-indigo-400 mr-1 text-[10px]"></i>${item.text}</span>
                     <span class="text-[9px] text-indigo-300/70 bg-indigo-950 px-1.5 py-0.5 rounded shrink-0">${formatTimeDisplay(item.time)}</span>
                 </div>
             `).join('');
         }
 
-        function calculatePriority(task) {
-            let score = 0;
-            if (!task.impact || task.impact === 0) { return { score: -1, reason: "Perlu Dilengkapi Detailnya" }; }
-            score += task.impact * 2; score += task.risk * 2;   
-            if (task.deadline) {
-                const daysLeft = Math.ceil((new Date(task.deadline) - new Date()) / (1000 * 60 * 60 * 24));
-                if (daysLeft < 0) { score += 50; reason = "⚠️ Melewati Deadline!"; }
-                else if (daysLeft <= 1) { score += 30; reason = "🔥 Hari Ini/Besok!"; }
-                else if (daysLeft <= 3) { score += 10; reason = "Mendekati Deadline"; }
-                else { reason = task.impact === 5 ? "Tugas Berdampak Besar" : "Prioritas Sesuai Dampak"; }
-            } else { reason = task.impact === 5 ? "Tugas Berdampak Besar" : "Prioritas Sesuai Dampak"; }
-            return { score, reason };
+        // ================= SUBTUGAS (LANGKAH KONKRET) =================
+        function addSubtask(source = 'detail') {
+            const inputId = source === 'focus' ? 'focus-subtask-quick-input' : 'subtask-input';
+            const input = document.getElementById(inputId);
+            const name = input.value.trim();
+            const targetTaskId = source === 'focus' ? activeFocusTaskId : currentEditingId;
+            if(!name || !targetTaskId) return;
+            
+            const task = appState.tasks.find(t => t.id === targetTaskId);
+            const ts = getTimestamp();
+            task.subtasks = task.subtasks || [];
+            task.subtasks.push({ id: Date.now().toString(), name, completed: false, note: "", createdAt: ts });
+            
+            saveState();
+            input.value = '';
+            
+            if (source === 'focus') {
+                document.getElementById('focus-subtask-add-box').classList.add('hidden');
+                renderFocusSubtasks();
+            } else {
+                renderSubtasks('detail');
+            }
         }
 
-        let pendingFocusTaskId = null;
-        let timerInterval = null;
-        let isTimerRunning = false;
-        let timeLeft = 30 * 60; 
-        let expectedEndTime = 0; 
-        let focusTaskNameForPiP = "Fokus Bebas"; 
+        function promptSubtaskToggle(subId, source = 'detail') {
+            const targetTaskId = source === 'focus' ? activeFocusTaskId : currentEditingId;
+            const task = appState.tasks.find(t => t.id === targetTaskId);
+            const sub = task.subtasks.find(s => s.id === subId);
+            
+            const actionText = sub.completed ? "Batalkan Selesai" : "Selesaikan Langkah";
+            const descText = sub.completed ? "Batalkan status selesai pada langkah ini?" : "Yakin langkah ini sudah selesai?";
 
+            showConfirm(actionText, descText, sub.completed ? "Batalkan" : "Selesai", () => {
+                sub.completed = !sub.completed;
+                saveState();
+                if(source === 'focus') renderFocusSubtasks(); else renderSubtasks('detail');
+            });
+        }
+
+        function promptDeleteSubtask(subId, source = 'detail') {
+            showConfirm("Hapus Langkah", "Yakin ingin menghapus langkah ini?", "Hapus", () => {
+                const targetTaskId = source === 'focus' ? activeFocusTaskId : currentEditingId;
+                const task = appState.tasks.find(t => t.id === targetTaskId);
+                task.subtasks = task.subtasks.filter(s => s.id !== subId);
+                saveState();
+                if(source === 'focus') renderFocusSubtasks(); else renderSubtasks('detail');
+            });
+        }
+
+        function toggleSubtaskNoteUI(subId, source) {
+            const container = document.getElementById(`subnote-container-${source}-${subId}`);
+            if(container) container.classList.toggle('hidden');
+        }
+
+        function editSubtaskNoteUI(subId, source) {
+            document.getElementById(`subnote-view-${source}-${subId}`).classList.add('hidden');
+            document.getElementById(`subnote-edit-${source}-${subId}`).classList.remove('hidden');
+        }
+
+        function cancelSubtaskNoteUI(subId, source) {
+            const targetTaskId = source === 'focus' ? activeFocusTaskId : currentEditingId;
+            const task = appState.tasks.find(t => t.id === targetTaskId);
+            const sub = task.subtasks.find(s => s.id === subId);
+            
+            if (sub && sub.note) {
+                // Return to view mode
+                document.getElementById(`subnote-view-${source}-${subId}`).classList.remove('hidden');
+                document.getElementById(`subnote-edit-${source}-${subId}`).classList.add('hidden');
+            } else {
+                // Hide entirely
+                toggleSubtaskNoteUI(subId, source);
+            }
+        }
+
+        function saveSubtaskNoteLogic(subId, source) {
+            const targetTaskId = source === 'focus' ? activeFocusTaskId : currentEditingId;
+            const task = appState.tasks.find(t => t.id === targetTaskId);
+            const sub = task.subtasks.find(s => s.id === subId);
+            const input = document.getElementById(`subnote-val-${source}-${subId}`);
+            
+            if(sub && input) {
+                sub.note = input.value; // biarkan enter & spasi apa adanya
+                saveState();
+                if (source === 'focus') renderFocusSubtasks(); else renderSubtasks('detail');
+            }
+        }
+
+        // Tampilan Render HTML untuk Subtugas
+        function generateSubtasksHTML(task, source) {
+            if(!task || !task.subtasks) return '';
+            
+            return task.subtasks.map(sub => `
+                <div class="p-3 bg-slate-950/50 rounded-xl border border-slate-800 w-full flex flex-col gap-2 overflow-hidden">
+                    <div class="flex items-start justify-between gap-3 w-full">
+                        <div class="flex items-start gap-3 flex-1 min-w-0 w-full overflow-hidden">
+                            <div class="mt-0.5 w-5 h-5 rounded-md border flex items-center justify-center shrink-0 cursor-pointer ${sub.completed ? 'bg-indigo-500 border-indigo-500' : 'border-slate-500 hover:border-indigo-400'}" onclick="promptSubtaskToggle('${sub.id}', '${source}')">
+                                ${sub.completed ? '<i class="fa-solid fa-check text-white text-xs"></i>' : ''}
+                            </div>
+                            <div class="flex-1 min-w-0 w-full">
+                                <p onclick="this.classList.toggle('line-clamp-1')" class="text-sm line-clamp-1 break-words cursor-pointer w-full ${sub.completed ? 'line-through text-slate-500' : 'text-slate-200'}" title="Klik untuk perluas/ringkas" style="overflow-wrap: break-word; word-break: break-word;">${sub.name}</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-end gap-2 shrink-0">
+                            ${sub.createdAt ? `<span class="text-[9px] text-slate-500 whitespace-nowrap">${formatTimeDisplay(sub.createdAt)}</span>` : ''}
+                            <div class="flex items-center gap-2">
+                                <button onclick="toggleSubtaskNoteUI('${sub.id}', '${source}')" title="Catatan Langkah" class="text-[10px] relative ${sub.note ? 'text-indigo-300 bg-indigo-900/40 hover:bg-indigo-900/60' : 'text-slate-400 hover:text-indigo-300 bg-slate-900 hover:bg-slate-800'} border border-slate-800 px-2 py-1 rounded transition-colors flex items-center gap-1">
+                                    <i class="fa-solid fa-pen"></i> ${sub.note ? 'Lihat/Edit' : 'Catatan'}
+                                    ${sub.note ? '<div class="absolute -top-1 -right-1 w-2 h-2 bg-indigo-500 rounded-full"></div>' : ''}
+                                </button>
+                                <button onclick="promptDeleteSubtask('${sub.id}', '${source}')" title="Hapus Langkah" class="text-slate-500 hover:text-red-400 p-1">
+                                    <i class="fa-solid fa-trash-can text-xs"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="subnote-container-${source}-${sub.id}" class="hidden flex-col gap-2 mt-2 pt-2 border-t border-slate-800/50 w-full">
+                        <!-- VIEW MODE -->
+                        <div id="subnote-view-${source}-${sub.id}" class="${sub.note ? 'block' : 'hidden'} w-full">
+                            <p class="text-xs text-slate-300 whitespace-pre-wrap break-words w-full">${sub.note}</p>
+                            <div class="flex gap-2 mt-3">
+                                <button onclick="editSubtaskNoteUI('${sub.id}', '${source}')" class="text-[10px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded transition-colors border border-slate-700"><i class="fa-solid fa-pen mr-1"></i>Edit Catatan</button>
+                            </div>
+                        </div>
+                        <!-- EDIT MODE -->
+                        <div id="subnote-edit-${source}-${sub.id}" class="${!sub.note ? 'flex' : 'hidden'} flex-col gap-2 w-full">
+                            <textarea id="subnote-val-${source}-${sub.id}" rows="3" placeholder="Tulis catatan... (Tekan Enter untuk baris baru)" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 resize-y">${sub.note || ''}</textarea>
+                            <div class="flex gap-2 justify-end mt-1">
+                                <button onclick="cancelSubtaskNoteUI('${sub.id}', '${source}')" class="text-[10px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded transition-colors border border-slate-700">Batal</button>
+                                <button onclick="saveSubtaskNoteLogic('${sub.id}', '${source}')" class="text-[10px] bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded transition-colors shadow-lg shadow-indigo-500/20">Simpan Catatan</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderSubtasks(source) {
+            const taskId = source === 'focus' ? activeFocusTaskId : currentEditingId;
+            const task = appState.tasks.find(t => t.id === taskId);
+            const containerId = source === 'focus' ? 'focus-subtasks-list' : 'subtask-list';
+            const container = document.getElementById(containerId);
+            
+            if(!task || !task.subtasks || task.subtasks.length === 0) {
+                container.innerHTML = source === 'focus' ? '<p class="text-xs text-slate-500 text-center py-2">Belum ada langkah.</p>' : '';
+                return;
+            }
+            container.innerHTML = generateSubtasksHTML(task, source);
+        }
+        function renderFocusSubtasks() { renderSubtasks('focus'); }
+        function openAddSubtaskFocusPrompt() { document.getElementById('focus-subtask-add-box').classList.toggle('hidden'); }
+
+        // ================= TIMER SETUP & FOCUS MODE =================
         function triggerTimerSetup() {
-            pendingFocusTaskId = currentEditingId;
-            closeModalNoSave();
+            const taskId = currentEditingId;
+            saveTaskDetailsOnly(); 
             
-            const task = appState.tasks.find(t => t.id === pendingFocusTaskId);
-            
+            const task = appState.tasks.find(t => t.id === taskId);
             const resumeBtn = document.getElementById('btn-resume-time');
+            
             if (task && task.savedTimeLeft && task.savedTimeLeft > 0) {
-                const m = Math.floor(task.savedTimeLeft / 60);
-                resumeBtn.innerText = `Lanjutkan Sisa Waktu (${m} Mnt)`;
+                resumeBtn.innerText = `Lanjutkan Sisa Waktu (${formatPreciseTime(task.savedTimeLeft)})`;
                 resumeBtn.classList.remove('hidden');
             } else {
                 resumeBtn.classList.add('hidden');
             }
             
+            activeFocusTaskId = taskId;
             document.getElementById('modal-timer-setup').classList.remove('hidden');
             document.getElementById('custom-timer-input').value = '';
         }
 
-        function closeModalNoSave() {
-            document.getElementById('modal-detail').classList.add('hidden');
-            currentEditingId = null;
-        }
-
         function closeTimerSetupModal() {
             document.getElementById('modal-timer-setup').classList.add('hidden');
-            pendingFocusTaskId = null;
+            activeFocusTaskId = null;
         }
 
         function confirmTimerSetup(minutes) {
             document.getElementById('modal-timer-setup').classList.add('hidden');
-            startFocusMode(pendingFocusTaskId, minutes);
+            startFocusMode(activeFocusTaskId, minutes);
         }
 
         function confirmCustomTimer() {
             const val = document.getElementById('custom-timer-input').value;
             const mins = parseInt(val);
-            if(mins > 0) {
-                confirmTimerSetup(mins);
-            }
+            if(mins > 0) confirmTimerSetup(mins);
         }
 
         function resumeSavedTime() {
             document.getElementById('modal-timer-setup').classList.add('hidden');
-            startFocusMode(pendingFocusTaskId, 'resume');
+            startFocusMode(activeFocusTaskId, 'resume');
         }
 
         function startFocusMode(taskId, timeOpt = null) {
@@ -901,8 +846,43 @@
             }
             
             document.getElementById('focus-mode').classList.remove('hidden');
+            document.getElementById('focus-task-title').innerText = focusTaskNameForPiP;
             document.getElementById('floating-timer').classList.add('hidden');
             
+            // Populate Notes & History in Focus Mode
+            const detailsPanel = document.getElementById('focus-details-panel');
+            const notesTarget = document.getElementById('focus-task-notes');
+            const histContainer = document.getElementById('focus-task-history-container');
+            const histTarget = document.getElementById('focus-task-history');
+
+            if (task && (task.notes || (task.continueNotes && task.continueNotes.length > 0))) {
+                detailsPanel.classList.remove('hidden');
+                notesTarget.innerHTML = task.notes || 'Tidak ada catatan khusus.';
+                
+                if (task.continueNotes && task.continueNotes.length > 0) {
+                    histContainer.classList.remove('hidden');
+                    histTarget.innerHTML = task.continueNotes.map((h, i) => `
+                        <div class="bg-slate-950 p-2.5 rounded border border-slate-800 w-full text-sm text-slate-300">
+                            <span class="text-[10px] text-indigo-400 block mb-1">Sesi (${formatTimeDisplay(h.time)}):</span>
+                            <span class="whitespace-pre-wrap break-words">${h.text}</span>
+                        </div>
+                    `).join('');
+                } else {
+                    histContainer.classList.add('hidden');
+                }
+            } else {
+                detailsPanel.classList.add('hidden');
+            }
+            
+            // Subtasks
+            const subPanel = document.getElementById('focus-subtasks-panel');
+            if (task) {
+                subPanel.classList.remove('hidden');
+                renderFocusSubtasks();
+            } else {
+                subPanel.classList.add('hidden');
+            }
+
             if(!isTimerRunning) { 
                 if (timeOpt === 'resume' && task && task.savedTimeLeft) {
                     timeLeft = task.savedTimeLeft;
@@ -914,13 +894,13 @@
                 updateTimerDisplay();
             }
             document.getElementById('timer-icon').className = isTimerRunning ? 'fa-solid fa-pause' : 'fa-solid fa-play';
-            renderFocusSubtasks();
             updateMuteIcon();
         }
         
         function minimizeFocusMode() {
             document.getElementById('focus-mode').classList.add('hidden');
             document.getElementById('floating-timer').classList.remove('hidden');
+            renderAll();
         }
         
         function reopenFocusMode() {
@@ -928,7 +908,13 @@
             document.getElementById('focus-mode').classList.remove('hidden');
         }
 
-        function cancelFocusMode() {
+        function promptCancelFocusMode() {
+            showConfirm("Berhenti Total", "Yakin ingin berhenti tanpa menyimpan riwayat apapun?", "Berhenti", () => {
+                cancelFocusMode(true);
+            });
+        }
+
+        function cancelFocusMode(forceClean = false) {
             if(isTimerRunning) {
                 clearInterval(timerInterval);
                 isTimerRunning = false;
@@ -945,7 +931,8 @@
                 task.savedTimeLeft = timeLeft;
                 saveState();
             }
-            activeFocusTaskId = null;
+            if(forceClean) activeFocusTaskId = null;
+            renderAll();
         }
 
         function toggleTimer() {
@@ -979,12 +966,13 @@
                 clearInterval(timerInterval);
                 timerInterval = setInterval(() => {
                     const now = Date.now();
-                    timeLeft = Math.round((expectedEndTime - now) / 1000);
+                    timeLeft = Math.max(0, Math.ceil((expectedEndTime - now) / 1000));
                     
                     if(timeLeft <= 0) { 
                         timeLeft = 0;
                         clearInterval(timerInterval); 
-                        if (!appState.settings.alarmMuted) playAlarm(); 
+                        isTimerRunning = false;
+                        playAlarm(); 
                         finishSessionPrompt(); 
                     }
                     updateTimerDisplay();
@@ -1008,27 +996,26 @@
             document.getElementById('floating-time-display').innerText = timeStr;
         }
 
+        function toggleMute() {
+            isMuted = !isMuted;
+            saveState();
+            updateMuteIcon();
+        }
+        function updateMuteIcon() {
+            const btn = document.getElementById('btn-mute');
+            btn.innerHTML = isMuted ? '<i class="fa-solid fa-volume-xmark"></i>' : '<i class="fa-solid fa-volume-high"></i>';
+            btn.className = isMuted ? 'text-red-400 hover:text-red-300 w-10 h-10 rounded-full bg-slate-900 border border-red-900/50 flex items-center justify-center transition-colors' 
+                                    : 'text-slate-400 hover:text-white w-10 h-10 rounded-full bg-slate-900 border border-slate-700 flex items-center justify-center transition-colors';
+        }
+
         function playAlarm() {
+            if(isMuted) return;
             const ctx = new (window.AudioContext || window.webkitAudioContext)();
             const osc = ctx.createOscillator(); osc.connect(ctx.destination);
             osc.frequency.value = 800; osc.start(); osc.stop(ctx.currentTime + 0.5);
         }
 
-        function toggleAlarmMute() {
-            appState.settings.alarmMuted = !appState.settings.alarmMuted;
-            saveState();
-            updateMuteIcon();
-        }
-
-        function updateMuteIcon() {
-            const icon = document.getElementById('mute-icon');
-            if (appState.settings.alarmMuted) {
-                icon.className = "fa-solid fa-volume-xmark text-red-400";
-            } else {
-                icon.className = "fa-solid fa-volume-high text-indigo-400";
-            }
-        }
-
+        // ================= PIP / WINDOW MODE =================
         const pipCanvas = document.getElementById('pip-canvas');
         const pipCtx = pipCanvas.getContext('2d');
         const pipVideo = document.getElementById('pip-video');
@@ -1040,16 +1027,7 @@
                 pipCtx.fillRect(0, 0, pipCanvas.width, pipCanvas.height);
                 pipStream = pipCanvas.captureStream(30);
                 pipVideo.srcObject = pipStream;
-                
-                return new Promise((resolve) => {
-                    pipVideo.onloadedmetadata = async () => {
-                        try {
-                            await pipVideo.play();
-                            resolve();
-                        } catch(e) { resolve(); }
-                    };
-                    pipVideo.load();
-                });
+                try { await pipVideo.play(); } catch(e) {}
             }
         }
 
@@ -1063,16 +1041,16 @@
             const s = (timeLeft % 60).toString().padStart(2, '0');
             
             pipCtx.fillStyle = '#818cf8'; 
-            pipCtx.font = 'bold 36px monospace';
+            pipCtx.font = 'bold 32px monospace';
             pipCtx.textAlign = 'center';
             pipCtx.textBaseline = 'middle';
-            pipCtx.fillText(`${m}:${s}`, pipCanvas.width / 2, pipCanvas.height / 2 - 12);
+            pipCtx.fillText(`${m}:${s}`, pipCanvas.width / 2, pipCanvas.height / 2 - 9);
             
             pipCtx.fillStyle = '#94a3b8'; 
-            pipCtx.font = '12px sans-serif';
+            pipCtx.font = '10px sans-serif';
             let shortTitle = focusTaskNameForPiP;
             if(shortTitle.length > 20) shortTitle = shortTitle.substring(0, 20) + '...';
-            pipCtx.fillText(shortTitle, pipCanvas.width / 2, pipCanvas.height / 2 + 22);
+            pipCtx.fillText(shortTitle, pipCanvas.width / 2, pipCanvas.height / 2 + 24);
 
             requestAnimationFrame(drawPiPFrame);
         }
@@ -1086,9 +1064,7 @@
                     }
                 } catch (error) {}
             } else if (!document.hidden && document.pictureInPictureElement) {
-                try {
-                    await document.exitPictureInPicture();
-                } catch (error) {}
+                try { await document.exitPictureInPicture(); } catch (error) {}
             }
         });
 
@@ -1096,23 +1072,18 @@
             requestAnimationFrame(drawPiPFrame);
         });
 
+        // ================= PENYELESAIAN SESI =================
         function finishSessionPrompt() {
             if(isTimerRunning) toggleTimer(); 
             if (document.pictureInPictureElement) document.exitPictureInPicture();
-            document.getElementById('focus-mode').classList.add('hidden');
-            document.getElementById('floating-timer').classList.add('hidden');
             
             document.getElementById('modal-finish').classList.remove('hidden');
             document.getElementById('continue-options').classList.add('hidden');
             document.getElementById('continue-notes').value = '';
-            
-            appState.stats.sessions += 1;
-            saveState();
         }
 
         function closeFinishModal() {
             document.getElementById('modal-finish').classList.add('hidden');
-            reopenFocusMode();
         }
 
         function submitFinish(status) {
@@ -1121,8 +1092,6 @@
             if (status === 'done' && task) {
                 task.completed = true; 
                 task.status = 'completed';
-                task.savedTimeLeft = null;
-                appState.stats.completed += 1; 
             } else if (status === 'continue' && task) {
                 task.status = 'paused';
                 task.savedTimeLeft = timeLeft;
@@ -1137,9 +1106,13 @@
 
             saveState();
             document.getElementById('modal-finish').classList.add('hidden');
+            document.getElementById('focus-mode').classList.add('hidden');
+            document.getElementById('floating-timer').classList.add('hidden');
             activeFocusTaskId = null;
+            renderAll();
         }
 
+        // ================= DISTRAKSI =================
         function parkIdea(inputId) {
             const input = document.getElementById(inputId);
             const text = input.value.trim();
@@ -1147,12 +1120,11 @@
             
             const ts = getTimestamp();
             appState.parkedIdeas.push({ text, time: ts });
-            appState.stats.parked += 1;
             saveState();
             input.value = ''; 
         }
 
-        function moveParkedToInbox(index) {
+        function moveDistractionToInbox(index) {
             const idea = appState.parkedIdeas[index];
             if(!idea) return;
             
@@ -1168,23 +1140,57 @@
             saveState();
         }
 
-        function deleteParked(index) {
+        function deleteDistraction(index) {
             appState.parkedIdeas.splice(index, 1);
             saveState();
         }
 
-        function promptResetStats() {
-            document.getElementById('modal-reset-confirm').classList.remove('hidden');
+        // TRUNCATE HTML
+        function createTruncatedHTML(text, idPrefix) {
+            if (!text) return '';
+            const limit = 80;
+            if (text.length <= limit) return `<span class="break-words whitespace-pre-wrap">${text}</span>`;
+            
+            const shortText = text.substring(0, limit) + '...';
+            return `
+                <div id="${idPrefix}-container" class="break-words">
+                    <span id="${idPrefix}-short" class="whitespace-pre-wrap">${shortText}</span>
+                    <span id="${idPrefix}-full" class="hidden whitespace-pre-wrap">${text}</span>
+                    <button onclick="toggleTruncate('${idPrefix}', event)" class="text-[10px] text-indigo-400 font-medium ml-1 hover:text-indigo-300">Lihat Selengkapnya</button>
+                </div>
+            `;
+        }
+        function toggleTruncate(idPrefix, e) {
+            if(e) e.stopPropagation();
+            const shortEl = document.getElementById(`${idPrefix}-short`);
+            const fullEl = document.getElementById(`${idPrefix}-full`);
+            const btn = document.getElementById(`${idPrefix}-container`).querySelector('button');
+            
+            if (fullEl.classList.contains('hidden')) {
+                fullEl.classList.remove('hidden');
+                shortEl.classList.add('hidden');
+                btn.innerText = 'Sembunyikan';
+            } else {
+                fullEl.classList.add('hidden');
+                shortEl.classList.remove('hidden');
+                btn.innerText = 'Lihat Selengkapnya';
+            }
         }
 
-        function closeResetConfirmModal() {
-            document.getElementById('modal-reset-confirm').classList.add('hidden');
-        }
+        // ================= RENDER UTAMA =================
+        function calculatePriority(task) {
+            let score = 0; let reason = "";
+            if (!task.impact || task.impact === 0) return { score: -1, reason: "Perlu Dilengkapi Detailnya" };
 
-        function executeResetStats() {
-            appState.stats = { sessions: 0, completed: 0, parked: 0 };
-            saveState();
-            closeResetConfirmModal();
+            score += task.impact * 2; score += task.risk * 2;   
+            if (task.deadline) {
+                const daysLeft = Math.ceil((new Date(task.deadline) - new Date()) / (1000 * 60 * 60 * 24));
+                if (daysLeft < 0) { score += 50; reason = "⚠️ Melewati Deadline!"; }
+                else if (daysLeft <= 1) { score += 30; reason = "🔥 Hari Ini/Besok!"; }
+                else if (daysLeft <= 3) { score += 10; reason = "Mendekati Deadline"; }
+                else { reason = task.impact === 5 ? "Tugas Berdampak Besar" : "Prioritas Sesuai Dampak"; }
+            } else { reason = task.impact === 5 ? "Tugas Berdampak Besar" : "Prioritas Sesuai Dampak"; }
+            return { score, reason };
         }
 
         function renderAll() {
@@ -1223,10 +1229,6 @@
                             <span class="bg-indigo-500/20 text-indigo-300 text-[10px] px-2 py-1 rounded-md border border-indigo-500/30 whitespace-nowrap self-start shrink-0 shadow-sm shadow-indigo-500/20"><i class="fa-solid fa-bolt text-orange-400 mr-1"></i> Prioritas 1</span>
                         </div>
                         <p class="text-xs text-slate-400 mt-2 bg-slate-950/80 p-2.5 rounded-lg inline-block w-full break-words box-border border border-slate-800"><i class="fa-solid fa-robot mr-1 text-slate-500"></i> ${top._reason}</p>
-                        <div class="flex items-center justify-between mt-4">
-                            <div class="bg-indigo-600 px-3 py-1.5 rounded text-xs text-white font-medium shadow-lg shadow-indigo-500/20"><i class="fa-solid fa-play mr-1"></i> Lanjut Kerjakan</div>
-                            ${top.createdAt ? `<span class="text-[10px] text-slate-500"><i class="fa-regular fa-clock mr-1"></i>${formatTimeDisplay(top.createdAt)}</span>` : ''}
-                        </div>
                     </div>`;
             } else {
                 topTarget.innerHTML = '<div class="text-center py-8 text-slate-400 text-sm border border-dashed border-slate-700 rounded-xl bg-slate-900/30 w-full"><i class="fa-solid fa-mug-hot text-2xl mb-3 block text-slate-600"></i>Belum ada tugas aktif.<br>Tambahkan di menu Inbox!</div>';
@@ -1250,29 +1252,25 @@
             };
 
             document.getElementById('inbox-list').innerHTML = activeTasks.map(t => renderCard(t)).join('') || '<div class="p-6 text-center border border-dashed border-slate-800 rounded-xl"><p class="text-sm text-slate-500">Antrean kosong.</p></div>';
-            document.getElementById('running-tasks-list').innerHTML = runningTasks.map(t => renderCard(t)).join('') || '<p class="text-xs text-slate-500">Tidak ada tugas yang sedang berjalan.</p>';
-            document.getElementById('paused-tasks-list').innerHTML = pausedTasks.map(t => renderCard(t)).join('') || '<p class="text-xs text-slate-500">Tidak ada tugas yang sedang dijeda.</p>';
-            document.getElementById('todo-tasks-list').innerHTML = todoTasks.map(t => renderCard(t)).join('') || '<p class="text-xs text-slate-500">Semua tugas aktif sudah dimulai.</p>';
+            document.getElementById('running-tasks-list').innerHTML = runningTasks.map(t => renderCard(t)).join('') || '<p class="text-xs text-slate-500 pl-2 border-l-2 border-slate-700">Tidak ada.</p>';
+            document.getElementById('paused-tasks-list').innerHTML = pausedTasks.map(t => renderCard(t)).join('') || '<p class="text-xs text-slate-500 pl-2 border-l-2 border-slate-700">Tidak ada.</p>';
+            document.getElementById('todo-tasks-list').innerHTML = todoTasks.map(t => renderCard(t)).join('') || '<p class="text-xs text-slate-500 pl-2 border-l-2 border-slate-700">Tidak ada.</p>';
             
             document.getElementById('completed-tasks-list').innerHTML = doneTasks.map(t => `
                 <div onclick="openTaskDetail('${t.id}')" class="p-3 bg-slate-900/50 border border-slate-800 rounded-lg flex justify-between items-center gap-2 w-full box-border cursor-pointer hover:bg-slate-800/50 transition-colors">
                     <span class="line-through text-slate-500 text-sm flex-1 break-words">${t.name}</span>
                     <i class="fa-solid fa-check-circle text-emerald-500/30 shrink-0"></i>
-                </div>`).join('') || '<p class="text-xs text-slate-500">Belum ada tugas yang selesai.</p>';
-
-            document.getElementById('stat-sessions').innerText = appState.stats.sessions;
-            document.getElementById('stat-completed').innerText = appState.stats.completed;
-            document.getElementById('stat-parked').innerText = appState.stats.parked;
+                </div>`).join('') || '<p class="text-xs text-slate-500 pl-2 border-l-2 border-slate-700">Belum ada yang selesai.</p>';
 
             document.getElementById('parked-list').innerHTML = appState.parkedIdeas.map((p, i) => `
                 <div class="p-3 bg-slate-950 rounded-lg text-sm text-slate-300 border border-slate-800 flex flex-col gap-2 w-full box-border hover:border-slate-600 transition-colors">
                     <div class="flex justify-between items-start gap-2">
-                        <span class="flex-1 break-words"><i class="fa-solid fa-thumbtack text-slate-600 mr-2 text-xs"></i>${p.text}</span>
+                        <span class="flex-1 break-words"><i class="fa-solid fa-thumbtack text-slate-600 mr-2 text-xs"></i>${createTruncatedHTML(p.text, `park-${i}`)}</span>
                         <span class="text-[10px] text-slate-500 bg-slate-900 px-2 py-0.5 rounded shrink-0">${formatTimeDisplay(p.time)}</span>
                     </div>
                     <div class="flex justify-end gap-2 border-t border-slate-800/50 pt-2 mt-1">
-                        <button onclick="moveParkedToInbox(${i})" class="text-[10px] bg-indigo-900/40 hover:bg-indigo-600 text-indigo-300 hover:text-white px-3 py-1.5 rounded transition-colors flex items-center"><i class="fa-solid fa-inbox mr-1"></i>Pindah ke Inbox</button>
-                        <button onclick="deleteParked(${i})" class="text-[10px] bg-red-900/20 hover:bg-red-900/50 text-red-400 px-3 py-1.5 rounded transition-colors"><i class="fa-solid fa-trash"></i></button>
+                        <button onclick="moveDistractionToInbox(${i})" class="text-[10px] bg-indigo-900/40 hover:bg-indigo-600 text-indigo-300 hover:text-white px-3 py-1.5 rounded transition-colors flex items-center"><i class="fa-solid fa-inbox mr-1"></i>Pindah ke Inbox</button>
+                        <button onclick="deleteDistraction(${i})" class="text-[10px] bg-red-900/20 hover:bg-red-900/50 text-red-400 px-3 py-1.5 rounded transition-colors"><i class="fa-solid fa-trash"></i></button>
                     </div>
                 </div>
             `).join('') || '<div class="p-6 text-center border border-dashed border-slate-800 rounded-xl"><p class="text-sm text-slate-500">Pikiran Anda sedang bersih!</p></div>';
