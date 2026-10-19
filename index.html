@@ -97,7 +97,7 @@
     </div>
 
     <!-- MODAL LENGKAPI PROFIL (ONBOARDING) -->
-    <div id="modal-profile" class="fixed inset-0 bg-slate-950 z-[250] hidden flex items-center justify-center p-4 overflow-y-auto">
+    <div id="modal-profile" class="fixed inset-0 bg-slate-950/90 z-[250] hidden flex items-center justify-center p-4 overflow-y-auto backdrop-blur-sm">
         <div class="glass-panel p-6 md:p-8 rounded-2xl w-full max-w-md border border-indigo-500/30 shadow-2xl flex flex-col relative my-8">
             <div class="text-center mb-6">
                 <h2 id="modal-profile-title" class="text-2xl font-bold text-white mb-2">Selamat Datang! ✨</h2>
@@ -245,6 +245,11 @@
                     <h3 class="text-sm font-medium text-indigo-400 mb-4"><i class="fa-solid fa-star mr-1"></i> Rekomendasi Eksekusi Utama</h3>
                     <div id="dashboard-top-task"></div>
                 </div>
+
+                <div class="glass-panel p-5 md:p-6 rounded-2xl border border-slate-700 w-full">
+                    <h3 class="text-sm font-medium text-slate-300 mb-4"><i class="fa-solid fa-list-ol mr-2"></i>Semua Tugas (Berdasarkan Prioritas)</h3>
+                    <div id="dashboard-pending-list" class="space-y-3 w-full"></div>
+                </div>
             </div>
 
             <!-- TAB INBOX -->
@@ -352,7 +357,7 @@
             <p id="confirm-desc" class="text-sm text-slate-400 mb-6 w-full break-words">Apakah Anda yakin?</p>
             <div class="flex gap-3 w-full">
                 <button onclick="closeConfirmModal()" class="flex-1 py-2.5 rounded-xl border border-slate-700 text-slate-300 hover:bg-slate-800 text-sm font-medium transition-colors">Batal</button>
-                <button id="confirm-btn-action" class="flex-1 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium transition-colors">Yakin</button>
+                <button id="confirm-btn-action" onclick="executeConfirmAction()" class="flex-1 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium transition-colors">Yakin</button>
             </div>
         </div>
     </div>
@@ -589,6 +594,7 @@
         let appState = { tasks: [], parkedIdeas: [] };
         let userProfile = null; 
         let pendingProfileImageBase64 = null; 
+        let authCheckComplete = false; 
         
         let isMuted = false;
         try { isMuted = JSON.parse(localStorage.getItem('fef_muted')) || false; } catch(e){}
@@ -605,6 +611,9 @@
 
         if(auth) {
             onAuthStateChanged(auth, async (user) => {
+                const authScreen = document.getElementById('auth-screen');
+                const profileModal = document.getElementById('modal-profile');
+                
                 if (user) {
                     userId = user.uid;
                     document.getElementById('user-email-display').innerText = user.email || 'Google User';
@@ -612,19 +621,14 @@
                     const profileRef = doc(db, 'artifacts', appId, 'users', userId, 'profile', 'data');
                     try {
                         const docSnap = await getDoc(profileRef);
-                        const authScreen = document.getElementById('auth-screen');
-                        const profileModal = document.getElementById('modal-profile');
                         
                         if (docSnap.exists()) {
-                            // User is valid and profile is complete
                             userProfile = docSnap.data();
                             profileModal.classList.add('hidden');
                             if(authScreen) authScreen.classList.add('hidden'); 
                             updateProfileUI();
                             
-                            migrateLocalDataToCloud().then(() => {
-                                setupCloudListeners();
-                            });
+                            migrateLocalDataToCloud().then(() => { setupCloudListeners(); });
                             renderAll();
                         } else {
                             // NEW USER! Force Onboarding Profile
@@ -632,32 +636,25 @@
                             if(authScreen) authScreen.classList.add('hidden'); 
                             document.getElementById('modal-profile-title').innerText = "Langkah Terakhir! ✨";
                             document.getElementById('modal-profile-desc').innerText = "Selesaikan pendaftaran Anda agar kami bisa menyapa Anda.";
-                            document.getElementById('btn-close-profile-edit').classList.add('hidden'); // Hide Cancel Button
+                            document.getElementById('btn-close-profile-edit').classList.add('hidden'); 
                             profileModal.classList.remove('hidden'); 
                         }
                         
-                        // Listen for profile changes
                         if(unsubProfile) unsubProfile();
                         unsubProfile = onSnapshot(profileRef, (snap) => {
-                            if (snap.exists()) {
-                                userProfile = snap.data();
-                                updateProfileUI();
-                            }
+                            if (snap.exists()) { userProfile = snap.data(); updateProfileUI(); }
                         });
                     } catch(e) {
-                        console.error("Firestore Error:", e);
                         const err = document.getElementById('auth-error');
                         if(err) {
-                            err.innerHTML = "<b>Akses Database Ditolak!</b> Pastikan Firestore Rules sudah di-Publish menjadi allow read, write: if request.auth != null;";
+                            err.innerHTML = "<b>Akses Database Ditolak!</b> Pastikan Firestore Rules sudah dibuka (if request.auth != null;).";
                             err.classList.remove('hidden');
                         }
                     }
                 } else {
-                    document.getElementById('auth-screen').classList.remove('hidden');
+                    if(authScreen) authScreen.classList.remove('hidden');
                     document.getElementById('user-email-display').innerText = '...';
-                    if (unsubTasks) unsubTasks();
-                    if (unsubParked) unsubParked();
-                    if (unsubProfile) unsubProfile();
+                    if (unsubTasks) unsubTasks(); if (unsubParked) unsubParked(); if (unsubProfile) unsubProfile();
                 }
             });
         }
@@ -719,12 +716,7 @@
                 document.getElementById('modal-profile').classList.add('hidden');
                 pendingProfileImageBase64 = null; 
                 
-                // If it was a first time onboarding, start the app listeners
-                if (!userProfile) {
-                    userProfile = profileData;
-                    setupCloudListeners();
-                }
-                
+                if (!userProfile) { userProfile = profileData; setupCloudListeners(); }
                 renderAll();
             } catch (error) {
                 err.innerHTML = "<b>Akses Ditolak!</b><br>Pastikan Firestore Rules diizinkan.";
@@ -739,24 +731,25 @@
             document.getElementById('btn-close-profile-edit').classList.remove('hidden');
             document.getElementById('modal-profile').classList.remove('hidden');
             
-            // Set inputs instantly without requestAnimationFrame lag
-            document.getElementById('prof-name').value = userProfile.name || "";
-            document.getElementById('prof-dob').value = userProfile.dob || "";
-            document.getElementById('prof-role').value = userProfile.role || "Pelajar/Mahasiswa";
-            document.getElementById('prof-inst').value = (userProfile.inst && userProfile.inst !== "Tidak dituliskan") ? userProfile.inst : "";
-            
-            const previewEl = document.getElementById('profile-image-preview');
-            const placeholderEl = document.getElementById('profile-image-placeholder');
-            
-            if (userProfile.photoBase64) {
-                previewEl.src = userProfile.photoBase64;
-                previewEl.classList.remove('hidden');
-                placeholderEl.classList.add('hidden');
-            } else {
-                previewEl.src = "";
-                previewEl.classList.add('hidden');
-                placeholderEl.classList.remove('hidden');
-            }
+            requestAnimationFrame(() => {
+                document.getElementById('prof-name').value = userProfile.name || "";
+                document.getElementById('prof-dob').value = userProfile.dob || "";
+                document.getElementById('prof-role').value = userProfile.role || "Pelajar/Mahasiswa";
+                document.getElementById('prof-inst').value = (userProfile.inst && userProfile.inst !== "Tidak dituliskan") ? userProfile.inst : "";
+                
+                const previewEl = document.getElementById('profile-image-preview');
+                const placeholderEl = document.getElementById('profile-image-placeholder');
+                
+                if (userProfile.photoBase64) {
+                    previewEl.src = userProfile.photoBase64;
+                    previewEl.classList.remove('hidden');
+                    placeholderEl.classList.add('hidden');
+                } else {
+                    previewEl.src = "";
+                    previewEl.classList.add('hidden');
+                    placeholderEl.classList.remove('hidden');
+                }
+            });
         };
 
         function calculateAge(dobString) {
@@ -1010,9 +1003,15 @@
             confirmActionCallback = callback;
             document.getElementById('modal-confirm').classList.remove('hidden');
         };
+        
         window.closeConfirmModal = () => {
             document.getElementById('modal-confirm').classList.add('hidden');
             confirmActionCallback = null;
+        };
+
+        window.executeConfirmAction = () => {
+            if (confirmActionCallback) confirmActionCallback();
+            closeConfirmModal();
         };
 
         window.addDetailedTask = () => {
@@ -1632,7 +1631,7 @@
                         const isNeedsInfo = t.impact === 0 || t.impact === undefined;
                         const statusBadge = isNeedsInfo ? `<span class="text-[10px] text-orange-400 bg-orange-900/20 px-2 py-0.5 rounded border border-orange-500/30 whitespace-nowrap shrink-0 mt-1 md:mt-0">⚠️ Perlu Detail</span>` : '';
                         return `
-                        <div onclick="openTaskDetail('${t.id}')" class="task-card glass-panel rounded-xl p-3 md:p-4 cursor-pointer w-full box-border border border-slate-700/50 hover:bg-slate-800/50 relative overflow-hidden flex items-center gap-3 md:gap-4 group">
+                        <div onclick="openTaskDetail('${t.id}')" class="task-card glass-panel rounded-xl p-3 md:p-4 cursor-pointer w-full box-border border border-slate-700/50 hover:bg-slate-800/50 relative overflow-hidden flex items-center gap-3 md:gap-4 group mt-3">
                             <div class="w-8 h-8 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center text-sm font-bold ${index === 0 ? 'text-indigo-400 shadow-[0_0_10px_rgba(99,102,241,0.3)]' : 'text-slate-400'} shrink-0">#${index + 1}</div>
                             <div class="flex flex-col flex-1 min-w-0">
                                 <h4 class="font-medium text-slate-200 leading-tight truncate group-hover:text-indigo-300 transition-colors">${t.name}</h4>
@@ -1660,7 +1659,7 @@
                 </div>`).join('') || '<p class="text-sm text-slate-500 pl-2 border-l-2 border-slate-700">Belum ada.</p>';
 
             document.getElementById('parked-list').innerHTML = appState.parkedIdeas.map(p => `
-                <div class="p-3 bg-slate-950 rounded-lg border border-slate-800 flex flex-col gap-2 w-full box-border hover:border-slate-600 transition-colors">
+                <div class="p-3 bg-slate-950 rounded-lg border border-slate-800 flex flex-col gap-2 w-full box-border hover:border-slate-600 transition-colors mt-3">
                     <div class="flex justify-between items-start gap-2">
                         ${createTruncatedHTML(p.text, `park-${p.id}`)}
                         <span class="text-[10px] text-slate-500 bg-slate-900 px-2 py-0.5 rounded shrink-0">${formatTimestamp(p.timestamp)}</span>
