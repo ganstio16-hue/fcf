@@ -1614,6 +1614,8 @@
             };
 
             const topTarget = document.getElementById('dashboard-top-task');
+            const dashPendingTarget = document.getElementById('dashboard-pending-list');
+
             if (allActive.length > 0) {
                 const top = allActive[0];
                 topTarget.innerHTML = `
@@ -1624,8 +1626,27 @@
                         </div>
                         <p class="text-xs text-slate-400 mt-2 bg-slate-950/80 p-2.5 rounded-lg inline-block w-full break-words box-border border border-slate-800"><i class="fa-solid fa-robot mr-1 text-slate-500"></i> ${top._reason}</p>
                     </div>`;
+
+                if (dashPendingTarget) {
+                    dashPendingTarget.innerHTML = allActive.map((t, index) => {
+                        const isNeedsInfo = t.impact === 0 || t.impact === undefined;
+                        const statusBadge = isNeedsInfo ? `<span class="text-[10px] text-orange-400 bg-orange-900/20 px-2 py-0.5 rounded border border-orange-500/30 whitespace-nowrap shrink-0 mt-1 md:mt-0">⚠️ Perlu Detail</span>` : '';
+                        return `
+                        <div onclick="openTaskDetail('${t.id}')" class="task-card glass-panel rounded-xl p-3 md:p-4 cursor-pointer w-full box-border border border-slate-700/50 hover:bg-slate-800/50 relative overflow-hidden flex items-center gap-3 md:gap-4 group">
+                            <div class="w-8 h-8 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center text-sm font-bold ${index === 0 ? 'text-indigo-400 shadow-[0_0_10px_rgba(99,102,241,0.3)]' : 'text-slate-400'} shrink-0">#${index + 1}</div>
+                            <div class="flex flex-col flex-1 min-w-0">
+                                <h4 class="font-medium text-slate-200 leading-tight truncate group-hover:text-indigo-300 transition-colors">${t.name}</h4>
+                                <p class="text-[10px] text-slate-500 mt-1 truncate">${t._reason}</p>
+                            </div>
+                            <div class="shrink-0 flex items-center">
+                                ${statusBadge}
+                            </div>
+                        </div>`;
+                    }).join('');
+                }
             } else {
                 topTarget.innerHTML = '<div class="text-center py-8 text-slate-400 text-sm border border-dashed border-slate-700 rounded-xl bg-slate-900/30 w-full"><i class="fa-solid fa-mug-hot text-2xl mb-3 block text-slate-600"></i>Antrean kosong.<br>Tugas baru akan tampil di sini!</div>';
+                if (dashPendingTarget) dashPendingTarget.innerHTML = '<div class="text-center py-6 text-slate-500 text-sm">Semua tugas sudah selesai! 🎉</div>';
             }
 
             document.getElementById('inbox-list').innerHTML = allActive.map(t => renderCard(t)).join('') || '<div class="p-6 text-center border border-dashed border-slate-800 rounded-xl"><p class="text-sm text-slate-500">Antrean kosong.</p></div>';
